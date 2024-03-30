@@ -1,4 +1,11 @@
-# fullstack-k8s
+# ecommerce1
+
+## Stack
+
+- GraphQL
+- Rust + Juniper + Pulsar
+- Elm + elm-land + elm-ui
+- Zitadel + PostgreSQL
 
 ## Purpose
 
