@@ -50,8 +50,8 @@ module "kubernetes-config" {
   acme_server = var.acme_server
 }
 
-module "zitadel_1" {
-  source          = "./modules/zitadel_1"
+module "zitadel" {
+  source          = "./modules/zitadel"
   do_pat          = var.do_pat
   ghcr_pat        = var.ghcr_pat
   cluster_name    = module.kubernetes-cluster.cluster_name

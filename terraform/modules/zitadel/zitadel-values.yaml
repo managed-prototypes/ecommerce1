@@ -1,7 +1,7 @@
 zitadel:
   masterkey: x123456789012345678901234567891y
   configmapConfig:
-    ExternalDomain: "zitadel.prototyping.quest"
+    ExternalDomain: "ecommerce1-auth.prototyping.quest"
     ExternalPort: 443
     ExternalSecure: true
     TLS:

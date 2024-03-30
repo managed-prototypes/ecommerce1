@@ -55,8 +55,8 @@ provider "helm" {
 # Reference: https://github.com/zitadel/zitadel-charts/tree/main/examples/1-postgres-insecure
 # 
 # When done:
-# Open https://zitadel.prototyping.quest
-# Username: zitadel-admin@zitadel.zitadel.prototyping.quest
+# Open https://ecommerce1-auth.prototyping.quest
+# Username: zitadel-admin@zitadel.ecommerce1-auth.prototyping.quest
 # Password: Password1!
 
 
