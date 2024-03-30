@@ -1,0 +1,103 @@
+_default:
+  @ just --list --unsorted
+
+# ------------------------- Deployment via CLI -------------------------
+
+# Init (fetch dependencies and state)
+init:
+  #!/bin/sh
+  set -eu
+  export AWS_PROFILE=managed_prototypes
+  terraform init
+
+# Init + upgrade state
+init-upgrade:
+  #!/bin/sh
+  set -eu
+  export AWS_PROFILE=managed_prototypes
+  terraform init -upgrade
+
+# Plan (dry run)
+plan:
+  #!/bin/sh
+  set -eu
+  export AWS_PROFILE=managed_prototypes
+  terraform plan \
+    -var-file="local.tfvars"
+
+# Apply (deploy)
+apply:
+  #!/bin/sh
+  set -eu
+  export AWS_PROFILE=managed_prototypes
+  terraform apply \
+    -auto-approve \
+    -var-file="local.tfvars"
+
+# Destroy
+destroy:
+  #!/bin/sh
+  set -eu
+  export AWS_PROFILE=managed_prototypes
+  terraform destroy \
+    -auto-approve \
+    -var-file="local.tfvars"
+
+# Show the current state
+show:
+  #!/bin/sh
+  set -eu
+  export AWS_PROFILE=managed_prototypes
+  terraform show
+
+# Apply and save cluster configuration (for kubectl)
+apply-and-kubectl: 
+  #!/bin/sh
+  set -eu
+  export AWS_PROFILE=managed_prototypes
+  terraform apply \
+    -auto-approve \
+    -var-file="local.tfvars" \
+    -var="write_kubeconfig=true"
+
+# Get pods (using the cluster configuration)
+check-kubectl: 
+  #!/bin/sh
+  set -eu
+  export KUBECONFIG="./kubernetes-cluster-access.yaml"
+  echo "================== namespaces"
+  kubectl get ns
+  echo "================== services"
+  kubectl get services --all-namespaces
+  echo "================== pods"
+  kubectl get pods --all-namespaces
+  echo "================== Certificates"
+  kubectl get Certificates --all-namespaces
+
+# Watch certs
+watch-certs: 
+  #!/bin/sh
+  set -eu
+  export KUBECONFIG="./kubernetes-cluster-access.yaml"
+  watch kubectl get Certificates --all-namespaces
+
+# List cert-manager logs for debugging purposes
+cert-manager-logs: 
+  #!/bin/sh
+  set -eu
+  export KUBECONFIG="./kubernetes-cluster-access.yaml"
+  kubectl logs -n cert-manager deployment/cert-manager --tail=30 -f
+
+# k9s
+k9s: 
+  #!/bin/sh
+  set -eu
+  export KUBECONFIG="./kubernetes-cluster-access.yaml"
+  k9s
+
+# penetrate
+penetrate: 
+  #!/bin/sh
+  set -eu
+  export KUBECONFIG="./kubernetes-cluster-access.yaml"
+  kubectl port-forward svc/my-zitadel 8080

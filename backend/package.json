@@ -1,0 +1,18 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/hapi": "^21.3.7"
+  },
+  "engines": {
+    "npm": ">=10.2.3 <11.0.0",
+    "node": ">=20.10.0 <21.0.0"
+  }
+}
