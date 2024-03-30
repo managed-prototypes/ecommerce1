@@ -50,14 +50,6 @@ module "kubernetes-config" {
   acme_server = var.acme_server
 }
 
-# module "applications" {
-#   source          = "./modules/applications"
-#   do_pat          = var.do_pat
-#   ghcr_pat        = var.ghcr_pat
-#   cluster_name    = module.kubernetes-cluster.cluster_name
-#   github_username = "vladimirlogachev"
-# }
-
 module "zitadel_1" {
   source          = "./modules/zitadel_1"
   do_pat          = var.do_pat

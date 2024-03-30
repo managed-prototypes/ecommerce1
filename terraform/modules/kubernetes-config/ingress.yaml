@@ -8,7 +8,7 @@ metadata:
     cert-manager.io/cluster-issuer: clusterissuer
 spec:
   rules:
-    - host: zitadel.prototyping.quest
+    - host: ecommerce1-auth.prototyping.quest
       http:
         paths:
           - path: /
@@ -19,6 +19,6 @@ spec:
                 port:
                   number: 8080
   tls:
-    - secretName: zitadel-service-cert
+    - secretName: zitadel-cert
       hosts:
-        - zitadel.prototyping.quest
+        - ecommerce1-auth.prototyping.quest
