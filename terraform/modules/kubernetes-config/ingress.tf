@@ -35,6 +35,6 @@ data "kubernetes_service_v1" "traefik" {
 resource "digitalocean_record" "zitadel" {
   domain = "prototyping.quest"
   type   = "A"
-  name   = "zitadel"
+  name   = "ecommerce1-auth"
   value  = data.kubernetes_service_v1.traefik.status.0.load_balancer.0.ingress.0.ip
 }
