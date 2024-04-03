@@ -48,6 +48,9 @@ module "kubernetes-config" {
 
   acme_email  = var.acme_email
   acme_server = var.acme_server
+
+  base_domain    = var.base_domain
+  auth_subdomain = var.auth_subdomain
 }
 
 module "zitadel" {
@@ -56,5 +59,8 @@ module "zitadel" {
   ghcr_pat        = var.ghcr_pat
   cluster_name    = module.kubernetes-cluster.cluster_name
   github_username = "vladimirlogachev"
+
+  base_domain    = var.base_domain
+  auth_subdomain = var.auth_subdomain
 }
 

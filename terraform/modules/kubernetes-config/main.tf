@@ -51,3 +51,7 @@ provider "helm" {
     )
   }
 }
+
+locals {
+  auth_fqdn = "${var.auth_subdomain}.${var.base_domain}"
+}

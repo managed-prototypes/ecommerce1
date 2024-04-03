@@ -15,3 +15,11 @@ variable "cluster_name" {
 variable "github_username" {
   type = string
 }
+
+variable "base_domain" {
+  type = string
+}
+
+variable "auth_subdomain" {
+  type = string
+}

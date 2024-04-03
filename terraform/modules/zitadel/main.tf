@@ -52,12 +52,18 @@ provider "helm" {
   }
 }
 
+locals {
+  auth_fqdn = "${var.auth_subdomain}.${var.base_domain}"
+}
+
+
 # Reference: https://github.com/zitadel/zitadel-charts/tree/main/examples/1-postgres-insecure
 # 
 # When done:
-# Open https://ecommerce1-auth.prototyping.quest
-# Username: zitadel-admin@zitadel.ecommerce1-auth.prototyping.quest
+# Open https://ecommerce1-staging-auth.prototyping.quest
+# Username: zitadel-admin@zitadel.ecommerce1-staging-auth.prototyping.quest
 # Password: Password1!
+# New Password: Password2!
 
 
 resource "helm_release" "postgres" {
@@ -79,6 +85,33 @@ resource "helm_release" "zitadel" {
   version    = "7.11.0"
   timeout    = 900 # seconds
   values = [
-    "${file("${path.module}/zitadel-values.yaml")}"
+    <<YAML
+zitadel:
+  masterkey: x123456789012345678901234567891y
+  configmapConfig:
+    ExternalDomain: "${local.auth_fqdn}"
+    ExternalPort: 443
+    ExternalSecure: true
+    TLS:
+      Enabled: false
+    Database:
+      Postgres:
+        Host: db-postgresql
+        Port: 5432
+        Database: zitadel
+        MaxOpenConns: 20
+        MaxIdleConns: 10
+        MaxConnLifetime: 30m
+        MaxConnIdleTime: 5m
+        User:
+          Username: postgres
+          SSL:
+            Mode: disable
+        Admin:
+          Username: postgres
+          SSL:
+            Mode: disable
+
+YAML
   ]
 }

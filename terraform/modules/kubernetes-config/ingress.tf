@@ -14,14 +14,34 @@ resource "helm_release" "traefik" {
   timeout    = 900 # seconds
 }
 
-data "kubectl_file_documents" "ingress" {
-  content = file("${path.module}/ingress.yaml")
-}
-
-resource "kubectl_manifest" "ingress" {
+resource "kubectl_manifest" "ingress_others" {
   depends_on = [helm_release.traefik]
-  for_each   = data.kubectl_file_documents.ingress.manifests
-  yaml_body  = each.value
+  yaml_body  = <<YAML
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: applications-ingress
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    cert-manager.io/cluster-issuer: clusterissuer
+spec:
+  rules:
+    - host: ${local.auth_fqdn}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: zitadel-service
+                port:
+                  number: 8080
+  tls:
+    - secretName: zitadel-cert
+      hosts:
+        - ${local.auth_fqdn}
+YAML
 }
 
 data "kubernetes_service_v1" "traefik" {
@@ -33,8 +53,8 @@ data "kubernetes_service_v1" "traefik" {
 }
 
 resource "digitalocean_record" "zitadel" {
-  domain = "prototyping.quest"
+  domain = var.base_domain
   type   = "A"
-  name   = "ecommerce1-auth"
+  name   = var.auth_subdomain
   value  = data.kubernetes_service_v1.traefik.status.0.load_balancer.0.ingress.0.ip
 }
