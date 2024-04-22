@@ -1,0 +1,33 @@
+/* This file contains custom CSS for the UI Kit */
+
+@-webkit-keyframes animation-pulse {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes animation-pulse {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+.animation-pulse {
+  -webkit-animation: animation-pulse 3s infinite ease-in-out;
+  -o-animation: animation-pulse 3s infinite ease-in-out;
+  -ms-animation: animation-pulse 3s infinite ease-in-out;
+  -moz-animation: animation-pulse 3s infinite ease-in-out;
+  animation: animation-pulse 3s infinite ease-in-out;
+}

@@ -1,0 +1,41 @@
+{
+  "name": "uikit",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "elm-land generate && vite",
+    "build": "elm-land generate && vite build",
+    "preview-build": "vite preview",
+    "typecheck": "elm-land build",
+    "test-watch": "elm-test \"src/**/*Test.elm\" --watch",
+    "test": "elm-test \"src/**/*Test.elm\"",
+    "format-fix-all": "elm-format --yes src/ review/",
+    "format-validate": "elm-format --validate src/ review/",
+    "review": "elm-review",
+    "review-fix-interactive": "elm-review --fix",
+    "review-fix-all": "yes | elm-review --fix-all",
+    "check-and-build": "npm run build && npm run format-validate && npm test && npm run review",
+    "precommit-fix": "npm run typecheck && npm run format-fix-all && npm test && npm run review-fix-all"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@dillonkearns/elm-graphql": "^4.3.1",
+    "elm": "^0.19.1-6",
+    "elm-format": "^0.8.7",
+    "elm-land": "^0.20.1",
+    "elm-review": "^2.10.2",
+    "elm-test": "^0.19.1-revision12",
+    "vite": "^5.2.8",
+    "vite-plugin-elm": "^3.0.0"
+  },
+  "dependencies": {
+    "elm-debug-transformer": "^1.2.1"
+  },
+  "engines": {
+    "npm": ">=10.2.3 <11.0.0",
+    "node": ">=20.10.0 <21.0.0"
+  }
+}
