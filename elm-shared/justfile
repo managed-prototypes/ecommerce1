@@ -1,0 +1,17 @@
+_default:
+  @ just --list --unsorted
+
+codegen:
+  #!/bin/sh
+  set -eu
+  npm run codegen
+
+check-and-build:
+  #!/bin/sh
+  set -eu
+  npm run check-and-build
+
+precommit-fix:
+  #!/bin/sh
+  set -eu
+  npm run precommit-fix
