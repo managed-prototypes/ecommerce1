@@ -20,6 +20,12 @@
 
 ## Development
 
+```sh
+just sync
+just backend/start
+just backend/stop
+```
+
 - [Design](docs/design.md)
 - [Prerequisites](docs/prerequisites.md)
 - [Dev Recipes](docs/dev-recipes.md)
