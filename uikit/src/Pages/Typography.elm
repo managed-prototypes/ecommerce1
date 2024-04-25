@@ -13,12 +13,12 @@ import View exposing (View)
 
 
 page : Shared.Model -> Route () -> Page Model Msg
-page shared _ =
+page _ _ =
     Page.new
         { init = init
         , update = update
         , subscriptions = always Sub.none
-        , view = view shared
+        , view = view
         }
         |> Page.withLayout toLayout
 
@@ -59,12 +59,12 @@ update _ model =
 -- VIEW
 
 
-view : Shared.Model -> Model -> View Msg
-view { screenClass } _ =
+view : Model -> View Msg
+view _ =
     { title = "Typography"
     , attributes = []
     , element =
-        Ui.Section.withBackgroundColor { backgroundColor = Color.white, screenClass = screenClass } <|
+        Ui.Section.withBackgroundColor { backgroundColor = Color.white } <|
             column [ spacing 50, width fill ]
                 [ paragraph Ui.TextStyle.headlineXL [ text "Headline XL" ]
                 , paragraph Ui.TextStyle.headlineL [ text "Headline L" ]

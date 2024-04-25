@@ -1,7 +1,7 @@
 module Shared.Model exposing (Model)
 
-import Ui.Toast as Toast
-import Ui.Window exposing (ScreenClass, WindowSize)
+import Ui.Toast
+import Ui.Window exposing (WindowSize)
 
 
 {-| Normally, this value would live in "Shared.elm"
@@ -13,6 +13,5 @@ own file, so they can be imported by `Effect.elm`
 -}
 type alias Model =
     { window : WindowSize
-    , screenClass : ScreenClass
-    , toasties : Toast.Stack Toast.Toast
+    , toasties : Ui.Toast.Stack Ui.Toast.Toast
     }

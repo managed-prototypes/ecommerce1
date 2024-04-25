@@ -1,4 +1,4 @@
-module Layouts.UiKitLayout exposing (Model, Msg, Props, layout)
+port module Layouts.UiKitLayout exposing (Model, Msg, Props, layout)
 
 import Effect exposing (Effect)
 import Element exposing (..)
@@ -15,6 +15,9 @@ import Ui.Toast as Toast exposing (Toast)
 import View exposing (View)
 
 
+port urlChanged : () -> Cmd msg
+
+
 type alias Props =
     {}
 
@@ -27,6 +30,7 @@ layout _ shared _ =
         , view = view shared
         , subscriptions = always Sub.none
         }
+        |> Layout.withOnUrlChanged (always UrlChanged)
 
 
 
@@ -49,12 +53,16 @@ init _ =
 
 
 type Msg
-    = PassToastMsg (Toast.Msg Toast)
+    = UrlChanged
+    | PassToastMsg (Toast.Msg Toast)
 
 
 update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
     case msg of
+        UrlChanged ->
+            ( model, Effect.sendCmd <| urlChanged () )
+
         PassToastMsg toastMsg ->
             ( model, Effect.passToastMsg toastMsg )
 
@@ -68,39 +76,29 @@ view shared { toContentMsg, content } =
     { title = content.title
     , attributes = content.attributes
     , element =
-        viewReady { shared = shared, toContentMsg = toContentMsg, contentElement = content.element }
-    }
+        let
+            links : List { url : String, caption : String }
+            links =
+                [ { url = Path.toString Path.Typography, caption = "Typography" }
+                , { url = Path.toString Path.Colors, caption = "Colors" }
+                , { url = Path.toString Path.Buttons, caption = "Buttons" }
+                , { url = Path.toString Path.Toasts, caption = "Toasts" }
+                ]
 
-
-viewReady :
-    { shared : Shared.Model
-    , toContentMsg : Msg -> contentMsg
-    , contentElement : Element contentMsg
-    }
-    -> Element contentMsg
-viewReady { shared, toContentMsg, contentElement } =
-    let
-        links : List { url : String, caption : String }
-        links =
-            [ { url = Path.toString Path.Typography, caption = "Typography" }
-            , { url = Path.toString Path.Colors, caption = "Colors" }
-            , { url = Path.toString Path.Buttons, caption = "Buttons" }
-            , { url = Path.toString Path.Toasts, caption = "Toasts" }
+            viewMenu : Element msg
+            viewMenu =
+                links
+                    |> List.map (\x -> link [ Font.color Color.primaryBlue ] { url = x.url, label = text x.caption })
+                    |> wrappedRow [ spacing 20, paddingXY 0 50 ]
+                    |> Ui.Section.withBackgroundColor { backgroundColor = Color.white }
+        in
+        column
+            ([ width (fill |> minimum Ui.Constants.minimalSupportedMobileScreenWidth)
+             , Element.inFront (Element.map toContentMsg <| Toast.view PassToastMsg shared.toasties)
+             ]
+                ++ Ui.TextStyle.body
+            )
+            [ viewMenu
+            , content.element
             ]
-
-        viewMenu : Element msg
-        viewMenu =
-            links
-                |> List.map (\x -> link [ Font.color Color.primaryBlue ] { url = x.url, label = text x.caption })
-                |> wrappedRow [ spacing 20, paddingXY 0 50 ]
-                |> Ui.Section.withBackgroundColor { backgroundColor = Color.white, screenClass = shared.screenClass }
-    in
-    column
-        ([ width (fill |> minimum Ui.Constants.minimalSupportedMobileScreenWidth)
-         , Element.inFront (Element.map toContentMsg <| Toast.view PassToastMsg shared.toasties)
-         ]
-            ++ Ui.TextStyle.body
-        )
-        [ viewMenu
-        , contentElement
-        ]
+    }

@@ -19,7 +19,7 @@ import Route.Path
 import Shared.Model
 import Shared.Msg
 import Ui.Toast as Toast exposing (Toast)
-import Ui.Window exposing (WindowSize, classifyScreen, initWindowSize, windowSizeDecoder)
+import Ui.Window exposing (WindowSize, initWindowSize, windowSizeDecoder)
 
 
 defaultPage : { path : Route.Path.Path, query : Dict.Dict String String, hash : Maybe String }
@@ -54,7 +54,6 @@ type alias Model =
 meaninglessDefaultModel : Shared.Model.Model
 meaninglessDefaultModel =
     { window = initWindowSize
-    , screenClass = classifyScreen initWindowSize
     , toasties = Toast.initialState
     }
 
@@ -84,7 +83,6 @@ init flagsResult _ =
 initReady : Flags -> ( Model, Effect Msg )
 initReady flags =
     ( { window = flags.windowSize
-      , screenClass = classifyScreen flags.windowSize
       , toasties = Toast.initialState
       }
     , Effect.none
@@ -128,7 +126,7 @@ update _ msg model =
 
 gotNewWindowSize : Model -> WindowSize -> ( Model, Effect Msg )
 gotNewWindowSize model newWindowSize =
-    ( { model | window = newWindowSize, screenClass = classifyScreen newWindowSize }, Effect.none )
+    ( { model | window = newWindowSize }, Effect.none )
 
 
 toastMsg : Model -> Toast.Msg Toast -> ( Model, Effect Msg )

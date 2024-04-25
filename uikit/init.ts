@@ -19,4 +19,8 @@ if (process.env.NODE_ENV === "development") {
     },
     node: rootNode,
   });
+
+  app.ports.urlChanged.subscribe((_val) => {
+    window.scrollTo(0, 0);
+  });
 })().catch(() => (window.location.href = "/error.html"));

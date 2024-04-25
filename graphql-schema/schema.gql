@@ -1,0 +1,114 @@
+"Shipping option: delivery"
+type ShippingOptionDelivery {
+  address: String!
+}
+
+"Pick-up point for the order"
+type PickupPoint {
+  pickupPointId: String!
+  title: String!
+}
+
+type MutationRoot {
+  adminProductCreateV1(productInput: ProductInput!): Unit!
+  adminProductUpdateV1(productId: String!, productInput: ProductInput!): Unit!
+}
+
+input ProductInput {
+  title: String!
+  imageUrl: String!
+  price: UsdPrice!
+}
+
+"Customer"
+type Customer {
+  userId: String!
+  displayName: String!
+}
+
+"UNIX timestamp, millis, as a string"
+scalar Timestamp
+
+"Shipping option"
+union ShippingOption = PickupPoint | ShippingOptionDelivery
+
+"Admin: Customer's order"
+type CustomerOrder {
+  orderId: String!
+  createdAt: Timestamp!
+  customer: Customer!
+  items: [OrderItem!]!
+  status: OrderStatus!
+  total: UsdAmount!
+  shippingOption: ShippingOption!
+}
+
+"Order item"
+type OrderItem {
+  product: Product!
+  quantity: Int!
+  itemTotal: UsdAmount!
+}
+
+type QueryRoot {
+  productsV1: [Product!]!
+  cartV1: Cart!
+  pickupPointsV1: [PickupPoint!]!
+  myOrdersV1: [Order!]!
+  adminProductsV1: [Product!]!
+  adminProductV1(productId: String!): Product!
+  adminCustomerOrdersV1: [CustomerOrder!]!
+}
+
+"Unit, an empty string"
+scalar Unit
+
+"A product to be displayed in the store"
+type Product {
+  productId: String!
+  title: String!
+  imageUrl: String!
+  price: UsdPrice!
+}
+
+"USD price, as a string containing decimal value, non-negative, 2 decimal places. e.g. 12.99"
+scalar UsdPrice
+
+"Cart contents"
+type Cart {
+  items: [CartItem!]!
+  total: UsdAmount!
+}
+
+"USD amount, as a string containing decimal value, non-negative, 2 decimal places. e.g. 12.99"
+scalar UsdAmount
+
+"An item to be displayed in the cart"
+type CartItem {
+  product: Product!
+  quantity: Int!
+  itemTotal: UsdAmount!
+}
+
+"Order"
+type Order {
+  orderId: String!
+  createdAt: Timestamp!
+  items: [OrderItem!]!
+  status: OrderStatus!
+  total: UsdAmount!
+  shippingOption: ShippingOption!
+}
+
+"Order status"
+enum OrderStatus {
+  PENDING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+schema {
+  query: QueryRoot
+  mutation: MutationRoot
+}

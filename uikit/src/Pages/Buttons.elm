@@ -11,17 +11,17 @@ import Ui.Button
 import Ui.Color as Color
 import Ui.Section
 import Ui.TextStyle
-import UiKitUtils exposing (deviceAwareContainer, viewOnBothBackgrounds)
+import UiKitUtils exposing (viewOnBothBackgrounds)
 import View exposing (View)
 
 
 page : Shared.Model -> Route () -> Page Model Msg
-page shared _ =
+page _ _ =
     Page.new
         { init = init
         , update = update
         , subscriptions = always Sub.none
-        , view = view shared
+        , view = view
         }
         |> Page.withLayout toLayout
 
@@ -62,30 +62,28 @@ update _ model =
 -- VIEW
 
 
-view : Shared.Model -> Model -> View Msg
-view { screenClass } _ =
+view : Model -> View Msg
+view _ =
     { title = "Buttons"
     , attributes = []
     , element =
-        Ui.Section.withBackgroundColor { backgroundColor = Color.white, screenClass = screenClass } <|
+        Ui.Section.withBackgroundColor { backgroundColor = Color.white } <|
             column [ width fill ]
                 [ paragraph (paddingXY 0 50 :: Ui.TextStyle.subheader) [ text "Default" ]
-                , deviceAwareContainer screenClass
+                , wrappedRow
                     [ width fill ]
-                    [ viewOnBothBackgrounds { title = "WhiteOnBlack", screenClass = screenClass }
+                    [ viewOnBothBackgrounds { title = "WhiteOnBlack" }
                         [ Ui.Button.new
                             { label = "Normal"
                             , onPress = Just ()
                             }
                             |> Ui.Button.withStyleWhiteOnBlack
-                            |> Ui.Button.withFullWidthOnMobile screenClass
                             |> Ui.Button.view
                         , Ui.Button.new
                             { label = "Disabled"
                             , onPress = Nothing
                             }
                             |> Ui.Button.withStyleWhiteOnBlack
-                            |> Ui.Button.withFullWidthOnMobile screenClass
                             |> Ui.Button.view
                         , Ui.Button.new
                             { label = "Loading"
@@ -93,27 +91,24 @@ view { screenClass } _ =
                             }
                             |> Ui.Button.withStyleWhiteOnBlack
                             |> Ui.Button.withStatesFrom RemoteData.Loading
-                            |> Ui.Button.withFullWidthOnMobile screenClass
                             |> Ui.Button.view
                         ]
                     ]
                 , paragraph (paddingXY 0 50 :: Ui.TextStyle.subheader) [ text "Danger" ]
-                , deviceAwareContainer screenClass
+                , wrappedRow
                     [ width fill ]
-                    [ viewOnBothBackgrounds { title = "DangerOnWhite", screenClass = screenClass }
+                    [ viewOnBothBackgrounds { title = "DangerOnWhite" }
                         [ Ui.Button.new
                             { label = "Normal"
                             , onPress = Just ()
                             }
                             |> Ui.Button.withStyleDangerOnWhite
-                            |> Ui.Button.withFullWidthOnMobile screenClass
                             |> Ui.Button.view
                         , Ui.Button.new
                             { label = "Disabled"
                             , onPress = Nothing
                             }
                             |> Ui.Button.withStyleDangerOnWhite
-                            |> Ui.Button.withFullWidthOnMobile screenClass
                             |> Ui.Button.view
                         , Ui.Button.new
                             { label = "Loading"
@@ -121,23 +116,20 @@ view { screenClass } _ =
                             }
                             |> Ui.Button.withStyleDangerOnWhite
                             |> Ui.Button.withStatesFrom RemoteData.Loading
-                            |> Ui.Button.withFullWidthOnMobile screenClass
                             |> Ui.Button.view
                         ]
-                    , viewOnBothBackgrounds { title = "DangerOnBlack", screenClass = screenClass }
+                    , viewOnBothBackgrounds { title = "DangerOnBlack" }
                         [ Ui.Button.new
                             { label = "Normal"
                             , onPress = Just ()
                             }
                             |> Ui.Button.withStyleDangerOnBlack
-                            |> Ui.Button.withFullWidthOnMobile screenClass
                             |> Ui.Button.view
                         , Ui.Button.new
                             { label = "Disabled"
                             , onPress = Nothing
                             }
                             |> Ui.Button.withStyleDangerOnBlack
-                            |> Ui.Button.withFullWidthOnMobile screenClass
                             |> Ui.Button.view
                         , Ui.Button.new
                             { label = "Loading"
@@ -145,7 +137,6 @@ view { screenClass } _ =
                             }
                             |> Ui.Button.withStyleDangerOnBlack
                             |> Ui.Button.withStatesFrom RemoteData.Loading
-                            |> Ui.Button.withFullWidthOnMobile screenClass
                             |> Ui.Button.view
                         ]
                     ]
