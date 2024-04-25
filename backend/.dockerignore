@@ -1,6 +1,10 @@
-/.gitignore
+# Ignore target directory
+target/
 
-/Dockerfile
-/.dockerignore
+# Exclude editor and IDE files
+.vscode/
+.idea/
 
-/node_modules
+# Extra shit
+.gitignore
+.DS_Store

@@ -1,0 +1,32 @@
+[package]
+name = "backend"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.74"
+
+[profile.release]
+strip = true  # Automatically strip symbols from the binary.
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+base64 = "0.21.2"
+# Http client
+reqwest = { version = "0.11", features = ["json"] }
+juniper = { version = "0.15.11" }
+juniper_warp = "0.7.0"
+native-tls = "0.2.11"
+redis = { version = "0.24.0", features = [
+  "tokio-comp",
+  "connection-manager",
+  "json",
+] }
+serde = "1.0.174"
+serde_derive = "1.0.167"
+serde_json = "1.0.103"
+tokio = { version = "1.29.1", features = ["macros", "rt-multi-thread"] }
+urlencoding = "2.1.3"
+uuid = "1.4.1"
+warp = "0.3.5"
+pulsar = "6.0.1"
+futures = "0.3.28"

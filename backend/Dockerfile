@@ -1,14 +1,22 @@
-FROM node:20.10-alpine as builder
-WORKDIR /app
+FROM rust:1.74-bullseye as builder
 
-# Install dependencies
-COPY package.json package-lock.json ./
-RUN npm install
+WORKDIR /usr/src/backend
 
-# Copy source code and build the app
 COPY . .
 
-EXPOSE 8000
+# Note: 
+# - protobuf-compiler is required for the Pulsar support
+RUN apt-get update && apt-get install -y protobuf-compiler
 
-# Command to run your application
-CMD ["npm", "start"]
+RUN cargo install --path .
+
+FROM debian:12.2-slim
+
+# Note: 
+# - ca-certificates solves an issue with some SSL certificates (when running HTTP requests to other servers)
+RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
+RUN update-ca-certificates
+
+COPY --from=builder /usr/local/cargo/bin/server /usr/local/bin/server
+
+CMD ["server"]

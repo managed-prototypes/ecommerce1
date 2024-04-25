@@ -1,0 +1,41 @@
+_default:
+  @ just --list --unsorted
+
+# Run server (and required dependencies)
+start:
+  #!/bin/sh
+  set -eu
+  docker compose up -Vd --wait
+  export BACKEND_REDIS_URI="redis://localhost:6379"
+  export BACKEND_AUTH_BASE_URL="http://localhost:8091"
+  export BACKEND_AUTH_PROJECT_ID=220047653491179525
+  export BACKEND_AUTH_CLIENT_ID="224594873293012996@ecommerce1"
+  export BACKEND_AUTH_CLIENT_SECRET="tGAu3tbD2tuaHE1UQ0A7uptFfcqV1SVKIpVUIg22uWoo86XkQSD8TbVCWJb6l5oR"
+  export BACKEND_PULSAR_URL="pulsar://localhost:6650"
+  cargo run --bin server
+
+
+# Stop server dependencies
+stop:
+  #!/bin/sh
+  set -eu
+  docker compose down -v
+  @echo "\n\n✅ Stopped all containers!\n\n"
+
+# Generate and write GraphQL schema
+schema:
+  #!/bin/sh
+  set -eu
+  cargo run --bin schema
+
+check-and-build:
+  #!/bin/sh
+  set -eu
+  cargo fmt --check
+  cargo build
+
+precommit-fix:
+  #!/bin/sh
+  set -eu
+  cargo fmt
+  cargo build
