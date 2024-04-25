@@ -29,7 +29,7 @@ services:
       interval: 5s
 
   pulsar:
-    image: apachepulsar/pulsar:3.1.0
+    image: apachepulsar/pulsar:3.2.2
     networks:
       - localNetwork
     ports:
