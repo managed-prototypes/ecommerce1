@@ -276,6 +276,18 @@ pub struct MutationRoot;
 
 #[juniper::graphql_object(Context = Context)]
 impl MutationRoot {
+    async fn set_cart_product_quantity_v1(
+        _context: &Context,
+        _product_id: ProductInput,
+        _quantity: i32,
+    ) -> FieldResult<Unit> {
+        // let token_info = zitadel::introspect_token(context).await?;
+        // require_role(&token_info, &ADMINISTRATOR_ROLE.to_string())?;
+
+        Ok(Unit::from(()))
+        // Err("Not implemented".into())
+    }
+
     async fn admin_product_create_v1(
         _context: &Context,
         _product_input: ProductInput,
@@ -284,6 +296,7 @@ impl MutationRoot {
         // require_role(&token_info, &ADMINISTRATOR_ROLE.to_string())?;
 
         Ok(Unit::from(()))
+        // Err("Not implemented".into())
     }
 
     async fn admin_product_update_v1(
@@ -291,6 +304,13 @@ impl MutationRoot {
         _product_id: String,
         _product_input: ProductInput,
     ) -> FieldResult<Unit> {
+        // let token_info = zitadel::introspect_token(context).await?;
+        // require_role(&token_info, &ADMINISTRATOR_ROLE.to_string())?;
+
+        Ok(Unit::from(()))
+    }
+
+    async fn admin_product_delete_v1(_context: &Context, _product_id: String) -> FieldResult<Unit> {
         // let token_info = zitadel::introspect_token(context).await?;
         // require_role(&token_info, &ADMINISTRATOR_ROLE.to_string())?;
 

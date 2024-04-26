@@ -10,8 +10,10 @@ type PickupPoint {
 }
 
 type MutationRoot {
+  setCartProductQuantityV1(productId: ProductInput!, quantity: Int!): Unit!
   adminProductCreateV1(productInput: ProductInput!): Unit!
   adminProductUpdateV1(productId: String!, productInput: ProductInput!): Unit!
+  adminProductDeleteV1(productId: String!): Unit!
 }
 
 input ProductInput {

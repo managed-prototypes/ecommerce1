@@ -19,6 +19,19 @@ import Json.Decode as Decode exposing (Decoder)
 import ScalarCodecs
 
 
+type alias SetCartProductQuantityV1RequiredArguments =
+    { productId : Api.InputObject.ProductInput
+    , quantity : Int
+    }
+
+
+setCartProductQuantityV1 :
+    SetCartProductQuantityV1RequiredArguments
+    -> SelectionSet ScalarCodecs.Unit RootMutation
+setCartProductQuantityV1 requiredArgs____ =
+    Object.selectionForField "ScalarCodecs.Unit" "setCartProductQuantityV1" [ Argument.required "productId" requiredArgs____.productId Api.InputObject.encodeProductInput, Argument.required "quantity" requiredArgs____.quantity Encode.int ] (ScalarCodecs.codecs |> Api.Scalar.unwrapCodecs |> .codecUnit |> .decoder)
+
+
 type alias AdminProductCreateV1RequiredArguments =
     { productInput : Api.InputObject.ProductInput }
 
@@ -41,3 +54,14 @@ adminProductUpdateV1 :
     -> SelectionSet ScalarCodecs.Unit RootMutation
 adminProductUpdateV1 requiredArgs____ =
     Object.selectionForField "ScalarCodecs.Unit" "adminProductUpdateV1" [ Argument.required "productId" requiredArgs____.productId Encode.string, Argument.required "productInput" requiredArgs____.productInput Api.InputObject.encodeProductInput ] (ScalarCodecs.codecs |> Api.Scalar.unwrapCodecs |> .codecUnit |> .decoder)
+
+
+type alias AdminProductDeleteV1RequiredArguments =
+    { productId : String }
+
+
+adminProductDeleteV1 :
+    AdminProductDeleteV1RequiredArguments
+    -> SelectionSet ScalarCodecs.Unit RootMutation
+adminProductDeleteV1 requiredArgs____ =
+    Object.selectionForField "ScalarCodecs.Unit" "adminProductDeleteV1" [ Argument.required "productId" requiredArgs____.productId Encode.string ] (ScalarCodecs.codecs |> Api.Scalar.unwrapCodecs |> .codecUnit |> .decoder)
