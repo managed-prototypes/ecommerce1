@@ -6,7 +6,7 @@ module Effect exposing
     , pushRoutePath, replaceRoutePath
     , loadExternalUrl, back
     , map, toCmd
-    , addToast, passToastMsg
+    , addToast, passToastMsg, protectedRequest, publicRequest
     )
 
 {-|
@@ -25,7 +25,9 @@ module Effect exposing
 -}
 
 import Browser.Navigation
+import Common.Graphql exposing (ProtectedRequest, PublicRequest, mapProtectedRequest, mapPublicRequest)
 import Dict exposing (Dict)
+import OAuth
 import Route
 import Route.Path
 import Shared.Model
@@ -47,6 +49,8 @@ type Effect msg
     | Back
       -- SHARED
     | SendSharedMsg Shared.Msg.Msg
+    | PublicRequest (PublicRequest msg)
+    | ProtectedRequest (ProtectedRequest msg)
 
 
 
@@ -140,6 +144,10 @@ back =
     Back
 
 
+
+-- CUSTOM
+
+
 passToastMsg : Ui.Toast.Msg Toast -> Effect msg
 passToastMsg =
     SendSharedMsg << Shared.Msg.ToastMsg
@@ -148,6 +156,20 @@ passToastMsg =
 addToast : ToastType -> Effect msg
 addToast =
     SendSharedMsg << Shared.Msg.AddToast
+
+
+{-| Note: See dev-decisions.md for explanation
+-}
+publicRequest : PublicRequest msg -> Effect msg
+publicRequest =
+    PublicRequest
+
+
+{-| Note: See dev-decisions.md for explanation
+-}
+protectedRequest : ProtectedRequest msg -> Effect msg
+protectedRequest =
+    ProtectedRequest
 
 
 
@@ -183,6 +205,12 @@ map fn effect =
 
         SendSharedMsg sharedMsg ->
             SendSharedMsg sharedMsg
+
+        PublicRequest req ->
+            PublicRequest (mapPublicRequest fn req)
+
+        ProtectedRequest req ->
+            ProtectedRequest (mapProtectedRequest fn req)
 
 
 {-| Elm Land depends on this function to perform your effects.
@@ -223,3 +251,20 @@ toCmd options effect =
         SendSharedMsg sharedMsg ->
             Task.succeed sharedMsg
                 |> Task.perform options.fromSharedMsg
+
+        PublicRequest req ->
+            req { graphqlUrl = options.shared.graphqlUrl }
+
+        ProtectedRequest req ->
+            -- case Oidc.toAuthSuccess options.shared.flow of
+            --     Just { accessToken } ->
+            --         req { graphqlUrl = options.shared.graphqlUrl, token = accessToken }
+            --     Nothing ->
+            --         Cmd.none
+            -- Stub:
+            case OAuth.tokenFromString "Bearer 123" of
+                Just accessToken ->
+                    req { graphqlUrl = options.shared.graphqlUrl, token = accessToken }
+
+                Nothing ->
+                    Cmd.none
