@@ -6,7 +6,6 @@ import Common.Graphql
     exposing
         ( GraphqlData
         , GraphqlResult
-        , publicQuery
         , viewResponse
         )
 import Common.UsdPrice as UsdPrice
@@ -28,9 +27,9 @@ import View exposing (View)
 
 
 page : Shared.Model -> Route () -> Page Model Msg
-page shared _ =
+page _ _ =
     Page.new
-        { init = init shared
+        { init = init
         , update = update
         , subscriptions = always Sub.none
         , view = view
@@ -47,11 +46,10 @@ type alias Model =
     }
 
 
-init : Shared.Model -> () -> ( Model, Effect Msg )
-init shared () =
-    ( { products = RemoteData.Loading
-      }
-    , getProducts shared
+init : () -> ( Model, Effect Msg )
+init () =
+    ( { products = RemoteData.Loading }
+    , getProducts
     )
 
 
@@ -61,14 +59,12 @@ init shared () =
 -- Network requests
 
 
-getProducts : Shared.Model -> Effect Msg
-getProducts shared =
-    publicQuery
+getProducts : Effect Msg
+getProducts =
+    Effect.publicQuery
         { query = Query.productsV1 ssProduct
         , onResponse = GotProductsResponse
         }
-        { graphqlUrl = shared.graphqlUrl }
-        |> Effect.sendCmd
 
 
 

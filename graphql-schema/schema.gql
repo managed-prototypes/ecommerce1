@@ -54,8 +54,8 @@ type OrderItem {
 
 type QueryRoot {
   productsV1: [Product!]!
-  cartV1: Cart!
   pickupPointsV1: [PickupPoint!]!
+  cartV1: Cart!
   myOrdersV1: [Order!]!
   adminProductsV1: [Product!]!
   adminProductV1(productId: String!): Product!

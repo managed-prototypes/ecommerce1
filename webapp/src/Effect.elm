@@ -6,7 +6,7 @@ module Effect exposing
     , pushRoutePath, replaceRoutePath
     , loadExternalUrl, back
     , map, toCmd
-    , addToast, passToastMsg, protectedRequest, publicRequest
+    , addToast, passToastMsg, protectedMutation, protectedQuery, publicMutation, publicQuery
     )
 
 {-|
@@ -25,7 +25,7 @@ module Effect exposing
 -}
 
 import Browser.Navigation
-import Common.Graphql exposing (ProtectedRequest, PublicRequest, mapProtectedRequest, mapPublicRequest)
+import Common.Graphql exposing (GraphqlResult, MutationReq, ProtectedRequest, PublicRequest, QueryReq, mapProtectedRequest, mapPublicRequest)
 import Dict exposing (Dict)
 import OAuth
 import Route
@@ -49,6 +49,7 @@ type Effect msg
     | Back
       -- SHARED
     | SendSharedMsg Shared.Msg.Msg
+      -- CUSTOM
     | PublicRequest (PublicRequest msg)
     | ProtectedRequest (ProtectedRequest msg)
 
@@ -158,18 +159,40 @@ addToast =
     SendSharedMsg << Shared.Msg.AddToast
 
 
-{-| Note: See dev-decisions.md for explanation
--}
-publicRequest : PublicRequest msg -> Effect msg
-publicRequest =
-    PublicRequest
+publicQuery :
+    { query : QueryReq a
+    , onResponse : GraphqlResult a -> msg
+    }
+    -> Effect msg
+publicQuery =
+    Common.Graphql.publicQuery >> PublicRequest
 
 
-{-| Note: See dev-decisions.md for explanation
--}
-protectedRequest : ProtectedRequest msg -> Effect msg
-protectedRequest =
-    ProtectedRequest
+publicMutation :
+    { mutation : MutationReq a
+    , onResponse : GraphqlResult a -> msg
+    }
+    -> Effect msg
+publicMutation =
+    Common.Graphql.publicMutation >> PublicRequest
+
+
+protectedQuery :
+    { query : QueryReq a
+    , onResponse : GraphqlResult a -> msg
+    }
+    -> Effect msg
+protectedQuery =
+    Common.Graphql.protectedQuery >> ProtectedRequest
+
+
+protectedMutation :
+    { mutation : MutationReq a
+    , onResponse : GraphqlResult a -> msg
+    }
+    -> Effect msg
+protectedMutation =
+    Common.Graphql.protectedMutation >> ProtectedRequest
 
 
 

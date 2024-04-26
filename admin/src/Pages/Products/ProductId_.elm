@@ -7,8 +7,6 @@ import Common.Graphql
     exposing
         ( GraphqlData
         , GraphqlResult
-        , publicMutation
-        , publicQuery
         , showGraphqlError
         , viewResponse
         )
@@ -35,10 +33,10 @@ import View exposing (View)
 
 
 page : Shared.Model -> Route { productId : String } -> Page Model Msg
-page shared route =
+page _ route =
     Page.new
-        { init = init shared route
-        , update = update shared
+        { init = init route
+        , update = update
         , subscriptions = always Sub.none
         , view = view
         }
@@ -58,15 +56,15 @@ type alias Model =
     }
 
 
-init : Shared.Model -> Route { productId : String } -> () -> ( Model, Effect Msg )
-init shared route () =
+init : Route { productId : String } -> () -> ( Model, Effect Msg )
+init route () =
     ( { product = RemoteData.Loading
       , productUpdateResponse = RemoteData.NotAsked
       , imageUrlInput = ""
       , titleInput = ""
       , priceInput = ""
       }
-    , getProduct shared { productId = route.params.productId }
+    , getProduct { productId = route.params.productId }
     )
 
 
@@ -76,24 +74,20 @@ init shared route () =
 -- Network requests
 
 
-getProduct : Shared.Model -> { productId : String } -> Effect Msg
-getProduct shared args =
-    publicQuery
+getProduct : { productId : String } -> Effect Msg
+getProduct args =
+    Effect.protectedQuery
         { query = Query.adminProductV1 args ssProduct
         , onResponse = GotProductResponse
         }
-        { graphqlUrl = shared.graphqlUrl }
-        |> Effect.sendCmd
 
 
-updateProduct : Shared.Model -> AdminProductUpdateV1RequiredArguments -> Effect Msg
-updateProduct shared args =
-    publicMutation
+updateProduct : AdminProductUpdateV1RequiredArguments -> Effect Msg
+updateProduct args =
+    Effect.protectedMutation
         { mutation = Mutation.adminProductUpdateV1 args
         , onResponse = GotProductUpdateResponse
         }
-        { graphqlUrl = shared.graphqlUrl }
-        |> Effect.sendCmd
 
 
 
@@ -109,8 +103,8 @@ type Msg
     | SaveClicked AdminProductUpdateV1RequiredArguments
 
 
-update : Shared.Model -> Msg -> Model -> ( Model, Effect Msg )
-update shared msg model =
+update : Msg -> Model -> ( Model, Effect Msg )
+update msg model =
     case msg of
         GotProductResponse res ->
             let
@@ -159,7 +153,7 @@ update shared msg model =
             ( { model | priceInput = str }, Effect.none )
 
         SaveClicked args ->
-            ( model, updateProduct shared args )
+            ( model, updateProduct args )
 
 
 

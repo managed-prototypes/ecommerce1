@@ -26,18 +26,18 @@ productsV1 object____ =
     Object.selectionForCompositeField "productsV1" [] object____ (Basics.identity >> Decode.list)
 
 
-cartV1 :
-    SelectionSet decodesTo Api.Object.Cart
-    -> SelectionSet decodesTo RootQuery
-cartV1 object____ =
-    Object.selectionForCompositeField "cartV1" [] object____ Basics.identity
-
-
 pickupPointsV1 :
     SelectionSet decodesTo Api.Object.PickupPoint
     -> SelectionSet (List decodesTo) RootQuery
 pickupPointsV1 object____ =
     Object.selectionForCompositeField "pickupPointsV1" [] object____ (Basics.identity >> Decode.list)
+
+
+cartV1 :
+    SelectionSet decodesTo Api.Object.Cart
+    -> SelectionSet decodesTo RootQuery
+cartV1 object____ =
+    Object.selectionForCompositeField "cartV1" [] object____ Basics.identity
 
 
 myOrdersV1 :

@@ -5,7 +5,6 @@ import Common.Graphql
     exposing
         ( GraphqlData
         , GraphqlResult
-        , publicMutation
         , showGraphqlError
         )
 import Components.ProductEditor as ProductEditor
@@ -32,7 +31,7 @@ import View exposing (View)
 page : Shared.Model -> Route () -> Page Model Msg
 page shared route =
     Page.new
-        { init = init shared route
+        { init = init route
         , update = update shared
         , subscriptions = always Sub.none
         , view = view
@@ -52,8 +51,8 @@ type alias Model =
     }
 
 
-init : Shared.Model -> Route () -> () -> ( Model, Effect Msg )
-init _ _ () =
+init : Route () -> () -> ( Model, Effect Msg )
+init _ () =
     ( { productCreateResponse = RemoteData.NotAsked
       , imageUrlInput = ""
       , titleInput = ""
@@ -69,14 +68,12 @@ init _ _ () =
 -- Network requests
 
 
-createProduct : Shared.Model -> AdminProductCreateV1RequiredArguments -> Effect Msg
-createProduct shared args =
-    publicMutation
+createProduct : AdminProductCreateV1RequiredArguments -> Effect Msg
+createProduct args =
+    Effect.protectedMutation
         { mutation = Mutation.adminProductCreateV1 args
         , onResponse = GotProductCreateResponse
         }
-        { graphqlUrl = shared.graphqlUrl }
-        |> Effect.sendCmd
 
 
 
@@ -121,7 +118,7 @@ update shared msg model =
             ( { model | priceInput = str }, Effect.none )
 
         SaveClicked args ->
-            ( model, createProduct shared args )
+            ( model, createProduct args )
 
 
 

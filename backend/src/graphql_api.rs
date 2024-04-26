@@ -13,9 +13,8 @@ pub struct QueryRoot;
 
 #[juniper::graphql_object(Context = Context)]
 impl QueryRoot {
+    // Public
     async fn products_v1(_context: &Context) -> FieldResult<Vec<Product>> {
-        // let token_info = zitadel::introspect_token(context).await?;
-
         let product1 = Product {
             product_id: "1".to_string(),
             title: "Black Olives \"Manageed Protiopes\"".to_string(),
@@ -44,6 +43,22 @@ impl QueryRoot {
 
         Ok(available_products)
     }
+
+    async fn pickup_points_v1(_context: &Context) -> FieldResult<Vec<PickupPoint>> {
+        let pickup_point1 = PickupPoint {
+            pickup_point_id: "1".to_string(),
+            title: "Pick-up point 1".to_string(),
+        };
+        let pickup_point2 = PickupPoint {
+            pickup_point_id: "2".to_string(),
+            title: "Pick-up point 2".to_string(),
+        };
+        let available_pickup_points = vec![pickup_point1, pickup_point2];
+
+        Ok(available_pickup_points)
+    }
+
+    // Protected
 
     async fn cart_v1(_context: &Context) -> FieldResult<Cart> {
         // let token_info = zitadel::introspect_token(context).await?;
@@ -74,22 +89,6 @@ impl QueryRoot {
             total: UsdAmount("127.00".to_string()),
         };
         Ok(cart)
-    }
-
-    async fn pickup_points_v1(_context: &Context) -> FieldResult<Vec<PickupPoint>> {
-        // let token_info = zitadel::introspect_token(context).await?;
-
-        let pickup_point1 = PickupPoint {
-            pickup_point_id: "1".to_string(),
-            title: "Pick-up point 1".to_string(),
-        };
-        let pickup_point2 = PickupPoint {
-            pickup_point_id: "2".to_string(),
-            title: "Pick-up point 2".to_string(),
-        };
-        let available_pickup_points = vec![pickup_point1, pickup_point2];
-
-        Ok(available_pickup_points)
     }
 
     async fn my_orders_v1(_context: &Context) -> FieldResult<Vec<Order>> {

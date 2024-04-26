@@ -6,7 +6,6 @@ import Common.Graphql
     exposing
         ( GraphqlData
         , GraphqlResult
-        , publicQuery
         , viewResponse
         )
 import Common.UsdAmount as UsdAmount
@@ -29,9 +28,9 @@ import View exposing (View)
 
 
 page : Shared.Model -> Route () -> Page Model Msg
-page shared _ =
+page _ _ =
     Page.new
-        { init = init shared
+        { init = init
         , update = update
         , subscriptions = always Sub.none
         , view = view
@@ -49,12 +48,12 @@ type alias Model =
     }
 
 
-init : Shared.Model -> () -> ( Model, Effect Msg )
-init shared () =
+init : () -> ( Model, Effect Msg )
+init () =
     ( { cart = RemoteData.Loading
       , pickupPoints = RemoteData.Loading
       }
-    , Effect.batch [ getCart shared, getPickupPoints shared ]
+    , Effect.batch [ getCart, getPickupPoints ]
     )
 
 
@@ -64,24 +63,20 @@ init shared () =
 -- Network requests
 
 
-getCart : Shared.Model -> Effect Msg
-getCart shared =
-    publicQuery
+getCart : Effect Msg
+getCart =
+    Effect.protectedQuery
         { query = Query.cartV1 ssCart
         , onResponse = GotCartResponse
         }
-        { graphqlUrl = shared.graphqlUrl }
-        |> Effect.sendCmd
 
 
-getPickupPoints : Shared.Model -> Effect Msg
-getPickupPoints shared =
-    publicQuery
+getPickupPoints : Effect Msg
+getPickupPoints =
+    Effect.publicQuery
         { query = Query.pickupPointsV1 ssPickupPoint
         , onResponse = GotPickupPointsResponse
         }
-        { graphqlUrl = shared.graphqlUrl }
-        |> Effect.sendCmd
 
 
 
