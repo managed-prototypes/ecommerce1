@@ -29,10 +29,10 @@ import View exposing (View)
 
 
 page : Shared.Model -> Route () -> Page Model Msg
-page shared route =
+page _ route =
     Page.new
         { init = init route
-        , update = update shared
+        , update = update
         , subscriptions = always Sub.none
         , view = view
         }
@@ -88,8 +88,8 @@ type Msg
     | SaveClicked AdminProductCreateV1RequiredArguments
 
 
-update : Shared.Model -> Msg -> Model -> ( Model, Effect Msg )
-update shared msg model =
+update : Msg -> Model -> ( Model, Effect Msg )
+update msg model =
     case msg of
         GotProductCreateResponse res ->
             case res of

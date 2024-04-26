@@ -81,6 +81,7 @@ view shared { toContentMsg, content } =
             links =
                 [ { url = Path.toString Path.Typography, caption = "Typography" }
                 , { url = Path.toString Path.Colors, caption = "Colors" }
+                , { url = Path.toString Path.Inputs, caption = "Inputs" }
                 , { url = Path.toString Path.Buttons, caption = "Buttons" }
                 , { url = Path.toString Path.Toasts, caption = "Toasts" }
                 ]
