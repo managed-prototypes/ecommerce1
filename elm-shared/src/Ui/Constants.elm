@@ -15,15 +15,11 @@ roundBorder =
     Border.rounded 1000
 
 
-{-| See dev-decisions.md
--}
 minimalSupportedMobileScreenWidth : Int
 minimalSupportedMobileScreenWidth =
     360
 
 
-{-| See dev-decisions.md
--}
 bigScreenStartsFrom : Int
 bigScreenStartsFrom =
     1280

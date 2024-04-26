@@ -238,8 +238,6 @@ type alias ZitadelAuthSuccess =
     }
 
 
-{-| See dev-decisions.md for details
--}
 authStateToFlow : Maybe ZitadelAuthSuccess -> Flow
 authStateToFlow x =
     case x of
@@ -250,7 +248,7 @@ authStateToFlow x =
             Idle
 
 
-{-| For LocalStorage, See dev-decisions.md for details
+{-| For LocalStorage
 -}
 authStateDecoder : Json.Decode.Decoder (Maybe ZitadelAuthSuccess)
 authStateDecoder =

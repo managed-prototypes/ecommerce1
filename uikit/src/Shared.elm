@@ -49,8 +49,6 @@ type alias Model =
     Shared.Model.Model
 
 
-{-| Note: See dev-decisions.md for explanation
--}
 meaninglessDefaultModel : Shared.Model.Model
 meaninglessDefaultModel =
     { window = initWindowSize
