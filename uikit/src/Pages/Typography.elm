@@ -6,8 +6,6 @@ import Layouts
 import Page exposing (Page)
 import Route exposing (Route)
 import Shared
-import Ui.Color as Color
-import Ui.Section
 import Ui.TextStyle
 import View exposing (View)
 
@@ -64,14 +62,13 @@ view _ =
     { title = "Typography"
     , attributes = []
     , element =
-        Ui.Section.withBackgroundColor { backgroundColor = Color.white } <|
-            column [ spacing 50, width fill ]
-                [ paragraph Ui.TextStyle.headlineXL [ text "Headline XL" ]
-                , paragraph Ui.TextStyle.headlineL [ text "Headline L" ]
-                , paragraph Ui.TextStyle.headlineS [ text "Headline S" ]
-                , paragraph Ui.TextStyle.header [ text "Header" ]
-                , paragraph Ui.TextStyle.subheader [ text "Subheader" ]
-                , paragraph Ui.TextStyle.button [ text "Button" ]
-                , paragraph Ui.TextStyle.body [ text "Body" ]
-                ]
+        column [ spacing 50, width fill ]
+            [ paragraph Ui.TextStyle.headlineXL [ text "Headline XL" ]
+            , paragraph Ui.TextStyle.headlineL [ text "Headline L" ]
+            , paragraph Ui.TextStyle.headlineS [ text "Headline S" ]
+            , paragraph Ui.TextStyle.header [ text "Header" ]
+            , paragraph Ui.TextStyle.subheader [ text "Subheader" ]
+            , paragraph Ui.TextStyle.button [ text "Button" ]
+            , paragraph Ui.TextStyle.body [ text "Body" ]
+            ]
     }

@@ -6,9 +6,7 @@ import Layouts
 import Page exposing (Page)
 import Route exposing (Route)
 import Shared
-import Ui.Color as Color
 import Ui.Input
-import Ui.Section
 import View exposing (View)
 
 
@@ -64,21 +62,20 @@ view _ =
     { title = "Colors"
     , attributes = []
     , element =
-        Ui.Section.withBackgroundColor { backgroundColor = Color.white } <|
-            column [ spacing 50, width fill ]
-                [ Ui.Input.new
-                    { label = "Address"
-                    , placeholder = "Some address"
-                    , text = ""
-                    , onChange = always ()
-                    }
-                    |> Ui.Input.view
-                , Ui.Input.new
-                    { label = "Address"
-                    , placeholder = "Some address"
-                    , text = "Filled"
-                    , onChange = always ()
-                    }
-                    |> Ui.Input.view
-                ]
+        column [ spacing 50, width fill ]
+            [ Ui.Input.new
+                { label = "Address"
+                , placeholder = "Some address"
+                , text = ""
+                , onChange = always ()
+                }
+                |> Ui.Input.view
+            , Ui.Input.new
+                { label = "Address"
+                , placeholder = "Some address"
+                , text = "Filled"
+                , onChange = always ()
+                }
+                |> Ui.Input.view
+            ]
     }

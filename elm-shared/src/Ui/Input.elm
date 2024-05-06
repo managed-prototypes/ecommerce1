@@ -6,9 +6,9 @@ module Ui.Input exposing
 
 import Common.E2e
 import Element exposing (..)
+import Element.Border as Border
 import Element.Input as Input
 import Maybe.Extra
-import Ui.Constants as Constants
 
 
 
@@ -42,7 +42,7 @@ view props =
         commonStyles : List (Attr () msg)
         commonStyles =
             [ height (px 52)
-            , Constants.roundBorder
+            , Border.rounded 50
             ]
 
         testIdAttributes : List (Attr () msg)

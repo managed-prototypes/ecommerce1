@@ -8,8 +8,6 @@ import RemoteData
 import Route exposing (Route)
 import Shared
 import Ui.Button
-import Ui.Color as Color
-import Ui.Section
 import Ui.TextStyle
 import UiKitUtils exposing (viewOnBothBackgrounds)
 import View exposing (View)
@@ -67,78 +65,77 @@ view _ =
     { title = "Buttons"
     , attributes = []
     , element =
-        Ui.Section.withBackgroundColor { backgroundColor = Color.white } <|
-            column [ width fill ]
-                [ paragraph (paddingXY 0 50 :: Ui.TextStyle.subheader) [ text "Default" ]
-                , wrappedRow
-                    [ width fill ]
-                    [ viewOnBothBackgrounds { title = "WhiteOnBlack" }
-                        [ Ui.Button.new
-                            { label = "Normal"
-                            , onPress = Just ()
-                            }
-                            |> Ui.Button.withStyleWhiteOnBlack
-                            |> Ui.Button.view
-                        , Ui.Button.new
-                            { label = "Disabled"
-                            , onPress = Nothing
-                            }
-                            |> Ui.Button.withStyleWhiteOnBlack
-                            |> Ui.Button.view
-                        , Ui.Button.new
-                            { label = "Loading"
-                            , onPress = Just ()
-                            }
-                            |> Ui.Button.withStyleWhiteOnBlack
-                            |> Ui.Button.withStatesFrom RemoteData.Loading
-                            |> Ui.Button.view
-                        ]
-                    ]
-                , paragraph (paddingXY 0 50 :: Ui.TextStyle.subheader) [ text "Danger" ]
-                , wrappedRow
-                    [ width fill ]
-                    [ viewOnBothBackgrounds { title = "DangerOnWhite" }
-                        [ Ui.Button.new
-                            { label = "Normal"
-                            , onPress = Just ()
-                            }
-                            |> Ui.Button.withStyleDangerOnWhite
-                            |> Ui.Button.view
-                        , Ui.Button.new
-                            { label = "Disabled"
-                            , onPress = Nothing
-                            }
-                            |> Ui.Button.withStyleDangerOnWhite
-                            |> Ui.Button.view
-                        , Ui.Button.new
-                            { label = "Loading"
-                            , onPress = Just ()
-                            }
-                            |> Ui.Button.withStyleDangerOnWhite
-                            |> Ui.Button.withStatesFrom RemoteData.Loading
-                            |> Ui.Button.view
-                        ]
-                    , viewOnBothBackgrounds { title = "DangerOnBlack" }
-                        [ Ui.Button.new
-                            { label = "Normal"
-                            , onPress = Just ()
-                            }
-                            |> Ui.Button.withStyleDangerOnBlack
-                            |> Ui.Button.view
-                        , Ui.Button.new
-                            { label = "Disabled"
-                            , onPress = Nothing
-                            }
-                            |> Ui.Button.withStyleDangerOnBlack
-                            |> Ui.Button.view
-                        , Ui.Button.new
-                            { label = "Loading"
-                            , onPress = Just ()
-                            }
-                            |> Ui.Button.withStyleDangerOnBlack
-                            |> Ui.Button.withStatesFrom RemoteData.Loading
-                            |> Ui.Button.view
-                        ]
+        column [ width fill ]
+            [ paragraph (paddingXY 0 50 :: Ui.TextStyle.subheader) [ text "Default" ]
+            , wrappedRow
+                [ width fill ]
+                [ viewOnBothBackgrounds { title = "WhiteOnBlack" }
+                    [ Ui.Button.new
+                        { label = "Normal"
+                        , onPress = Just ()
+                        }
+                        |> Ui.Button.withStyleWhiteOnBlack
+                        |> Ui.Button.view
+                    , Ui.Button.new
+                        { label = "Disabled"
+                        , onPress = Nothing
+                        }
+                        |> Ui.Button.withStyleWhiteOnBlack
+                        |> Ui.Button.view
+                    , Ui.Button.new
+                        { label = "Loading"
+                        , onPress = Just ()
+                        }
+                        |> Ui.Button.withStyleWhiteOnBlack
+                        |> Ui.Button.withStatesFrom RemoteData.Loading
+                        |> Ui.Button.view
                     ]
                 ]
+            , paragraph (paddingXY 0 50 :: Ui.TextStyle.subheader) [ text "Danger" ]
+            , wrappedRow
+                [ width fill ]
+                [ viewOnBothBackgrounds { title = "DangerOnWhite" }
+                    [ Ui.Button.new
+                        { label = "Normal"
+                        , onPress = Just ()
+                        }
+                        |> Ui.Button.withStyleDangerOnWhite
+                        |> Ui.Button.view
+                    , Ui.Button.new
+                        { label = "Disabled"
+                        , onPress = Nothing
+                        }
+                        |> Ui.Button.withStyleDangerOnWhite
+                        |> Ui.Button.view
+                    , Ui.Button.new
+                        { label = "Loading"
+                        , onPress = Just ()
+                        }
+                        |> Ui.Button.withStyleDangerOnWhite
+                        |> Ui.Button.withStatesFrom RemoteData.Loading
+                        |> Ui.Button.view
+                    ]
+                , viewOnBothBackgrounds { title = "DangerOnBlack" }
+                    [ Ui.Button.new
+                        { label = "Normal"
+                        , onPress = Just ()
+                        }
+                        |> Ui.Button.withStyleDangerOnBlack
+                        |> Ui.Button.view
+                    , Ui.Button.new
+                        { label = "Disabled"
+                        , onPress = Nothing
+                        }
+                        |> Ui.Button.withStyleDangerOnBlack
+                        |> Ui.Button.view
+                    , Ui.Button.new
+                        { label = "Loading"
+                        , onPress = Just ()
+                        }
+                        |> Ui.Button.withStyleDangerOnBlack
+                        |> Ui.Button.withStatesFrom RemoteData.Loading
+                        |> Ui.Button.view
+                    ]
+                ]
+            ]
     }

@@ -15,6 +15,7 @@ module Shared exposing
 
 import Browser.Events
 import Effect exposing (Effect)
+import GridLayout1
 import Json.Decode
 import Route exposing (Route)
 import Route.Path
@@ -22,7 +23,6 @@ import Shared.Config exposing (Config)
 import Shared.Model
 import Shared.Msg
 import Ui.Toast as Toast exposing (Toast)
-import Ui.Window exposing (WindowSize, initWindowSize, windowSizeDecoder)
 
 
 defaultPage : Route.Path.Path
@@ -35,14 +35,14 @@ defaultPage =
 
 
 type alias Flags =
-    { config : Config, windowSize : WindowSize }
+    { config : Config, windowSize : GridLayout1.WindowSize }
 
 
 decoder : Json.Decode.Decoder Flags
 decoder =
     Json.Decode.map2 Flags
         (Json.Decode.field "config" Shared.Config.configDecoder)
-        (Json.Decode.field "windowSize" <| windowSizeDecoder)
+        (Json.Decode.field "windowSize" <| GridLayout1.windowSizeDecoder)
 
 
 
@@ -51,6 +51,18 @@ decoder =
 
 type alias Model =
     Shared.Model.Model
+
+
+layoutConfig : GridLayout1.LayoutConfig
+layoutConfig =
+    { mobileScreen =
+        { minGridWidth = 1024
+        , maxGridWidth = Just 1024
+        , columnCount = 12
+        , gutter = 16
+        , margin = GridLayout1.SameAsGutter
+        }
+    }
 
 
 init : Result Json.Decode.Error Flags -> Route () -> ( Model, Effect Msg )
@@ -65,7 +77,7 @@ init flagsResult _ =
 
 initOk : Flags -> ( Model, Effect Msg )
 initOk flags =
-    ( { window = flags.windowSize
+    ( { layout = GridLayout1.init layoutConfig flags.windowSize
       , graphqlUrl = flags.config.graphqlUrl
       , toasties = Toast.initialState
       }
@@ -80,7 +92,7 @@ initError =
     let
         meaninglessDefaultModel : Shared.Model.Model
         meaninglessDefaultModel =
-            { window = initWindowSize
+            { layout = GridLayout1.init layoutConfig { width = 1024, height = 768 }
             , graphqlUrl = ""
             , toasties = Toast.initialState
             }
@@ -123,9 +135,9 @@ update _ msg model =
             addToast model toast
 
 
-gotNewWindowSize : Model -> WindowSize -> ( Model, Effect Msg )
+gotNewWindowSize : Model -> GridLayout1.WindowSize -> ( Model, Effect Msg )
 gotNewWindowSize model newWindowSize =
-    ( { model | window = newWindowSize }, Effect.none )
+    ( { model | layout = GridLayout1.update model.layout newWindowSize }, Effect.none )
 
 
 toastMsg : Model -> Toast.Msg Toast -> ( Model, Effect Msg )

@@ -8,7 +8,6 @@ import Page exposing (Page)
 import Route exposing (Route)
 import Shared
 import Ui.Color as Color
-import Ui.Section
 import Ui.TextStyle
 import UiKitUtils exposing (smallGreyCaption)
 import View exposing (View)
@@ -66,22 +65,21 @@ view _ =
     { title = "Colors"
     , attributes = []
     , element =
-        Ui.Section.withBackgroundColor { backgroundColor = Color.white } <|
-            column [ spacing 50, width fill ]
-                [ paragraph (paddingXY 0 50 :: Ui.TextStyle.subheader) [ text "Colors to be used directly" ]
-                , [ ( Color.black, "black" )
-                  , ( Color.blackDimmed, "blackDimmed" )
-                  , ( Color.grey, "grey" )
-                  , ( Color.greyDimmed1, "greyDimmed1" )
-                  , ( Color.greyDimmed2, "greyDimmed2" )
-                  , ( Color.greyDimmed3, "greyDimmed3" )
-                  , ( Color.white, "white" )
-                  , ( Color.dangerRed, "dangerRed" )
-                  , ( Color.primaryBlue, "primaryBlue" )
-                  ]
-                    |> List.map viewColorSample
-                    |> wrappedRow [ spacing 30, width fill ]
-                ]
+        column [ spacing 50, width fill ]
+            [ paragraph (paddingXY 0 50 :: Ui.TextStyle.subheader) [ text "Colors to be used directly" ]
+            , [ ( Color.black, "black" )
+              , ( Color.blackDimmed, "blackDimmed" )
+              , ( Color.grey, "grey" )
+              , ( Color.greyDimmed1, "greyDimmed1" )
+              , ( Color.greyDimmed2, "greyDimmed2" )
+              , ( Color.greyDimmed3, "greyDimmed3" )
+              , ( Color.white, "white" )
+              , ( Color.dangerRed, "dangerRed" )
+              , ( Color.primaryBlue, "primaryBlue" )
+              ]
+                |> List.map viewColorSample
+                |> wrappedRow [ spacing 30, width fill ]
+            ]
     }
 
 

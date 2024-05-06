@@ -11,13 +11,13 @@ module Ui.Button exposing
 import Common.E2e
 import Element exposing (..)
 import Element.Background as Background
+import Element.Border as Border
 import Element.Font as Font
 import Element.Input as Input
 import Html.Attributes
 import Maybe.Extra
 import RemoteData exposing (RemoteData)
 import Ui.Color as Color
-import Ui.Constants as Constants
 import Ui.TextStyle
 
 
@@ -79,7 +79,7 @@ view { label, onPress, style, statesFrom, testId } =
         commonStyles : List (Attr () msg)
         commonStyles =
             [ height (px 52)
-            , Constants.roundBorder
+            , Border.rounded 50
             ]
 
         testIdAttributes : List (Attr () msg)

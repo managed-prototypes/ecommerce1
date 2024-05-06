@@ -14,9 +14,9 @@ module Ui.Toast exposing
 import Animation
 import Element exposing (..)
 import Element.Background as Background
+import Element.Border as Border
 import Element.Font as Font
 import Ui.Color as Color
-import Ui.Constants
 import Ui.Toast.Defaults
 import Ui.Toast.Library as Library
 
@@ -110,7 +110,7 @@ viewToast toast =
     let
         commonStyle : List (Attribute msg)
         commonStyle =
-            [ width fill, Ui.Constants.roundBorder, Background.color Color.black ] ++ List.map Element.htmlAttribute (Animation.render toast.animationState)
+            [ width fill, Border.rounded 50, Background.color Color.black ] ++ List.map Element.htmlAttribute (Animation.render toast.animationState)
     in
     case toast.toastType of
         Neutral str ->

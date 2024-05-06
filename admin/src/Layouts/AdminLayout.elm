@@ -2,10 +2,12 @@ port module Layouts.AdminLayout exposing (Model, Msg, Props, layout)
 
 import Effect exposing (Effect)
 import Element exposing (..)
+import GridLayout1
 import Layout exposing (Layout)
 import Route exposing (Route)
 import Route.Path as Path
 import Shared
+import Ui.TextStyle
 import Ui.Toast as Toast exposing (Toast)
 import View exposing (View)
 import VitePluginHelper
@@ -70,27 +72,41 @@ update msg model =
 view : Shared.Model -> { toContentMsg : Msg -> contentMsg, content : View contentMsg, model : Model } -> View contentMsg
 view shared { toContentMsg, content } =
     { title = content.title
-    , attributes = content.attributes
+    , attributes = GridLayout1.bodyAttributes shared.layout ++ Ui.TextStyle.body ++ content.attributes
     , element =
-        column
-            [ padding 50
-            , spacing 50
-            , Element.inFront (Element.map toContentMsg <| Toast.view PassToastMsg shared.toasties)
-            ]
-            [ row [ spacing 50 ]
-                [ link []
-                    { url = Path.toString Path.CustomerOrders
-                    , label = text "Orders"
-                    }
-                , link []
-                    { url = Path.toString Path.Products
-                    , label = text "Products"
-                    }
-                , image []
-                    { src = VitePluginHelper.asset "/assets/icons/sign-out.svg"
-                    , description = "Placeholder"
-                    }
-                ]
-            , content.element
-            ]
+        let
+            viewMenu : Element msg
+            viewMenu =
+                row [ spacing 50 ]
+                    [ link []
+                        { url = Path.toString Path.CustomerOrders
+                        , label = text "Orders"
+                        }
+                    , link []
+                        { url = Path.toString Path.Products
+                        , label = text "Products"
+                        }
+                    , image []
+                        { src = VitePluginHelper.asset "/assets/icons/sign-out.svg"
+                        , description = "Placeholder"
+                        }
+                    ]
+
+            outerElementAttrs : List (Attribute msg)
+            outerElementAttrs =
+                []
+
+            innerElementAttrs : List (Attribute contentMsg)
+            innerElementAttrs =
+                [ Element.inFront (Element.map toContentMsg <| Toast.view PassToastMsg shared.toasties) ]
+
+            outerElement : List (Element msg) -> Element msg
+            outerElement =
+                column (GridLayout1.layoutOuterAttributes ++ outerElementAttrs)
+
+            innerElement : List (Element contentMsg) -> Element contentMsg
+            innerElement =
+                column (GridLayout1.layoutInnerAttributes shared.layout ++ innerElementAttrs)
+        in
+        outerElement [ innerElement [ viewMenu, content.element ] ]
     }

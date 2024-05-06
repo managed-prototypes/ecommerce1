@@ -7,8 +7,6 @@ import Page exposing (Page)
 import Route exposing (Route)
 import Shared
 import Ui.Button
-import Ui.Color as Color
-import Ui.Section
 import Ui.TextStyle
 import Ui.Toast exposing (ToastType(..))
 import View exposing (View)
@@ -68,23 +66,22 @@ view _ =
     { title = "Toasts"
     , attributes = []
     , element =
-        Ui.Section.withBackgroundColor { backgroundColor = Color.white } <|
-            column [ spacing 50, width fill ]
-                [ paragraph (paddingXY 0 50 :: Ui.TextStyle.subheader) [ text "Toasts" ]
-                , Ui.Button.new
-                    { label = "Short"
-                    , onPress = Just <| AddToast <| Neutral "A thing created"
-                    }
-                    |> Ui.Button.view
-                , Ui.Button.new
-                    { label = "Verbose"
-                    , onPress = Just <| AddToast <| Neutral "Once upon a time, there was a thing created by the glorious user"
-                    }
-                    |> Ui.Button.view
-                , Ui.Button.new
-                    { label = "Error"
-                    , onPress = Just <| AddToast <| NeutralPersistent "Something went wrong. Lord help us with this one"
-                    }
-                    |> Ui.Button.view
-                ]
+        column [ spacing 50, width fill ]
+            [ paragraph (paddingXY 0 50 :: Ui.TextStyle.subheader) [ text "Toasts" ]
+            , Ui.Button.new
+                { label = "Short"
+                , onPress = Just <| AddToast <| Neutral "A thing created"
+                }
+                |> Ui.Button.view
+            , Ui.Button.new
+                { label = "Verbose"
+                , onPress = Just <| AddToast <| Neutral "Once upon a time, there was a thing created by the glorious user"
+                }
+                |> Ui.Button.view
+            , Ui.Button.new
+                { label = "Error"
+                , onPress = Just <| AddToast <| NeutralPersistent "Something went wrong. Lord help us with this one"
+                }
+                |> Ui.Button.view
+            ]
     }
